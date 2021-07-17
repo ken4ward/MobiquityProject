@@ -24,6 +24,7 @@ Tests are written using a combination of
 3. For each post, fetch the comments and validate if the emails in the comment section are in the proper format.
 4. Think of various scenarios for the test workflow, all the things that can go wrong. Add them to test coverage
  
+
 **Project Structure and Explanation**
 <img width="319" alt="Screen Shot 2021-07-17 at 4 34 18 PM" src="https://user-images.githubusercontent.com/1056293/126043898-20b78607-a1e5-4a6e-8529-6954738c95e6.png">
 
