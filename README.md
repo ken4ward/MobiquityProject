@@ -34,4 +34,16 @@ The Cucumber feature files are stored in the feature directory. The step definit
 
 The Init class is used for class initialization of default files that have  to run before others, and the property files where the variables are stored. The TestCases class is where the actual method for the TestCases covered  in this project are stored.
 
-In tge resources folder we have the schema.json and unique-property.properties file wherre the variables are stored.
+In the resources folder we have the schema.json and unique-property.properties file wherre the variables are stored.
+
+
+**Executing the tests**
+The tests can be executed in 2 ways:
+- Clone the project git by issuing git clone https://github.com/ken4ward/MobiquityProject.git
+- Open the project in the IDE (Eclispe or Intellij [though Intellij is preferered as it is the IDE usedd in developing it.]) of your choice. 
+- Firstly, Locate testng.xml in terh root directory, right click and run.
+- Secondly, Locate TestCases.java file and run it from the class level. If only a method is ran, it can't pass the variables other methods epends on to them.
+- Run this command to generate the Allure report - allure serve {the allure-report directory in the root directory of the project}. 
+Example is this “allure serve /Users/wikiwoo/MobiquityProject/allure-results”
+
+
