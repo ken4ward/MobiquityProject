@@ -1,12 +1,28 @@
-# MobiquityProject
-<h1 align="center">Hi 👋, I'm Kehinde Adeoya</h1>
-<h3 align="left">Connect with me:</h3>
-<p align="left">
-<a href="https://twitter.com/ken4ward" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/twitter.svg" alt="ken4ward" height="30" width="40" /></a>
-<a href="https://linkedin.com/in/ken4ward" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="ken4ward" height="30" width="40" /></a>
-<a href="https://stackoverflow.com/users/ken4ward" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/stack-overflow.svg" alt="ken4ward" height="30" width="40" /></a>
-<a href="https://fb.com/ken4ward" target="blank"><img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/facebook.svg" alt="ken4ward" height="30" width="40" /></a>
-</p>
+Introduction
+This is a sample Rest API test solution for sample endpoints available in https://jsonplaceholder.typicode.com/. The published APIs represent a blog application where users can publish posts, todos and comment on them.
+Tests are written using a combination of RestAssured, Cucumber, TestNG, Allure Reports, Postman & Maven.
+Framework & Design Considerations
+RestAssured is used in writing this project using the BDD framework of Cucumber for documentation and reporting.
+API calls & validations are made using RestAssured.
+Tests are written in BDD Gherkin format in Cucumber feature files and it is represented as a living documentation in the test report.
+This solution is designed in an SOLID pattern with the code base categorized into domain model packages based on user actions like search, post and comment to understand/validate results.
+These domain models are called from a step-definitions class which are in-turn called from BDD tests. The step definitions files are generated from the feature files, so the feature files invariably act as the inline documentation for each definition file.
+There are 4 scenarios in total to cover which includes 
+Search for the user with username “Delphine”.
+Use the details fetched to make a search for the posts written by the user.
+3. For each post, fetch the comments and validate if the emails in the comment section are in the proper format.
+4. Think of various scenarios for the test workflow, all the things that can go wrong. Add them to test coverage
+ 
+ 
+ 
+ 
+Project Structure and Explanation
 
-<h3 align="left">Languages and Tools:</h3>
-<p align="left"> <a href="https://developer.android.com" target="_blank"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/android/android-original-wordmark.svg" alt="android" width="40" height="40"/> </a> <a href="https://www.gnu.org/software/bash/" target="_blank"> <img src="https://www.vectorlogo.zone/logos/gnu_bash/gnu_bash-icon.svg" alt="bash" width="40" height="40"/> </a> <a href="https://cassandra.apache.org/" target="_blank"> <img src="https://www.vectorlogo.zone/logos/apache_cassandra/apache_cassandra-icon.svg" alt="cassandra" width="40" height="40"/> </a> <a href="https://www.docker.com/" target="_blank"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/docker/docker-original-wordmark.svg" alt="docker" width="40" height="40"/> </a> <a href="https://firebase.google.com/" target="_blank"> <img src="https://www.vectorlogo.zone/logos/firebase/firebase-icon.svg" alt="firebase" width="40" height="40"/> </a> <a href="https://flutter.dev" target="_blank"> <img src="https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg" alt="flutter" width="40" height="40"/> </a> <a href="https://cloud.google.com" target="_blank"> <img src="https://www.vectorlogo.zone/logos/google_cloud/google_cloud-icon.svg" alt="gcp" width="40" height="40"/> </a> <a href="https://grafana.com" target="_blank"> <img src="https://www.vectorlogo.zone/logos/grafana/grafana-icon.svg" alt="grafana" width="40" height="40"/> </a> <a href="https://www.jenkins.io" target="_blank"> <img src="https://www.vectorlogo.zone/logos/jenkins/jenkins-icon.svg" alt="jenkins" width="40" height="40"/> </a> <a href="https://kafka.apache.org/" target="_blank"> <img src="https://www.vectorlogo.zone/logos/apache_kafka/apache_kafka-icon.svg" alt="kafka" width="40" height="40"/> </a> <a href="https://kubernetes.io" target="_blank"> <img src="https://www.vectorlogo.zone/logos/kubernetes/kubernetes-icon.svg" alt="kubernetes" width="40" height="40"/> </a> <a href="https://mariadb.org/" target="_blank"> <img src="https://www.vectorlogo.zone/logos/mariadb/mariadb-icon.svg" alt="mariadb" width="40" height="40"/> </a> <a href="https://mochajs.org" target="_blank"> <img src="https://www.vectorlogo.zone/logos/mochajs/mochajs-icon.svg" alt="mocha" width="40" height="40"/> </a> <a href="https://www.mongodb.com/" target="_blank"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/> </a> <a href="https://www.microsoft.com/en-us/sql-server" target="_blank"> <img src="https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg" alt="mssql" width="40" height="40"/> </a> <a href="https://www.mysql.com/" target="_blank"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original-wordmark.svg" alt="mysql" width="40" height="40"/> </a> <a href="https://www.nginx.com" target="_blank"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nginx/nginx-original.svg" alt="nginx" width="40" height="40"/> </a> <a href="https://nodejs.org" target="_blank"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/> </a> <a href="https://www.postgresql.org" target="_blank"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original-wordmark.svg" alt="postgresql" width="40" height="40"/> </a> <a href="https://www.rabbitmq.com" target="_blank"> <img src="https://www.vectorlogo.zone/logos/rabbitmq/rabbitmq-icon.svg" alt="rabbitMQ" width="40" height="40"/> </a> <a href="https://www.selenium.dev" target="_blank"> <img src="https://raw.githubusercontent.com/detain/svg-logos/780f25886640cef088af994181646db2f6b1a3f8/svg/selenium-logo.svg" alt="selenium" width="40" height="40"/> </a> <a href="https://spring.io/" target="_blank"> <img src="https://www.vectorlogo.zone/logos/springio/springio-icon.svg" alt="spring" width="40" height="40"/> </a> </p>
+
+Allure Report is used in generating reports for the project. t o use it in this project, the user will download it on their system by following this tutorial - https://docs.qameta.io/allure/ . This link contains the minimal setup for each system conf=ig like Mac, Windows, Linux. 
+
+The Cucumber feature files are stored in the feature directory. The step definitions come after the feature files, so they are stored in the stepdefinitions package. The POJO classes for response validations are stored in the POJO packages. Being a simple project, it sounds like an overkill running against all the POJO classes. 
+
+The Init class is used for class initialization of default files that have  to run before others, and the property files where the variables are stored. The TestCases class is where the actual method for the TestCases covered  in this project are stored.
+
+In tge resources folder we have the schema.json and unique-property.properties file wherre the variables are stored.
