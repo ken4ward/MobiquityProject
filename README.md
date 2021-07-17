@@ -24,10 +24,10 @@ Tests are written using a combination of
 3. For each post, fetch the comments and validate if the emails in the comment section are in the proper format.
 4. Think of various scenarios for the test workflow, all the things that can go wrong. Add them to test coverage
  
-Project Structure and Explanation
+**Project Structure and Explanation**
 <img width="319" alt="Screen Shot 2021-07-17 at 4 34 18 PM" src="https://user-images.githubusercontent.com/1056293/126043898-20b78607-a1e5-4a6e-8529-6954738c95e6.png">
 
-Allure Report is used in generating reports for the project. To use it in this project, the user will download it on their system by following this tutorial - https://docs.qameta.io/allure/ . This link contains the minimal setup for each system config like Mac, Windows, Linux. 
+>Allure Report is used in generating reports for the project. To use it in this project, the user will download it on their system by following this tutorial - https://docs.qameta.io/allure/ . This link contains the minimal setup for each system config like Mac, Windows, Linux. 
 
 The Cucumber feature files are stored in the feature directory. The step definitions come after the feature files, so they are stored in the stepdefinitions package. The POJO classes for response validations are stored in the POJO packages. Being a simple project, it sounds like an overkill running against all the POJO classes. 
 
