@@ -3,9 +3,12 @@
 <suite name="All Test Suite">
     <test verbose="2" preserve-order="true" name="src/main/java/io/christdoes/testrunner/TestRunner.java">
         <classes>
-            <class name="io.christdoes.testrunner.TestRunner">
+            <class name="io.christdoes.test.testcases.TestCases">
                 <methods><include name="feature"/>
-
+                    <include name="searchForUsername"></include>
+                    <include name="searchForUserPost"></include>
+                    <include name="searchForUserCommentinnPostAndVlidateEmail"></include>
+                    <include name="otherScenariosThatCouldGoWrong"></include>
                 </methods>
             </class>
         </classes>

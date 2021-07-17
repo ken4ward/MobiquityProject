@@ -28,6 +28,7 @@ public class TestCases {
         Response res = RestAssured.given().queryParam(getProperties().getProperty("project.query"), getProperties().getProperty("project.username"))
                 .get(Init.initProperties() +getProperties().getProperty("users.pathURL"));
          userId = (Integer) res.jsonPath().getList("id").get(0);
+         System.out.println("This is the user ID" +userId);
     }
 
     /***
@@ -43,6 +44,7 @@ public class TestCases {
         ResponseBody body = response.getBody();
         String bodyStringValue = body.asString();
         idList = response.jsonPath().getList("id");
+        System.out.println("This is the user post IDs" +idList);
         Assert.assertTrue(bodyStringValue.contains("id"));
     }
 
@@ -58,6 +60,7 @@ public class TestCases {
             Response response = myRequest().get( Init.initProperties()+getProperties().getProperty("user.comment.pathURL") +e);
             List<String> email = response.jsonPath().getList("email");
             for (String s: email) {
+                System.out.println("This validates email " +s);
                 Assert.assertTrue(validate(s));
             }
         }

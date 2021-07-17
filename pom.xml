@@ -34,6 +34,7 @@
                 <configuration>
                     <source>11</source>
                     <target>11</target>
+<!--                    <executable>/usr/bin/java</executable>-->
                 </configuration>
             </plugin>
             <plugin>
