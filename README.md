@@ -1,6 +1,6 @@
 **Introduction**
 
->This is a sample Rest API test solution for sample endpoints available in https://jsonplaceholder.typicode.com/. The published APIs represent a blog application where users can publish posts, todos and comment on them.
+>This is a sample Rest API test solution for sample endpoints available in https://jsonplaceholder.typicode.com/. >The published APIs represent a blog application where users can publish posts, todos and comment on them.
 Tests are written using a combination of RestAssured, Cucumber, TestNG, Allure Reports, Postman & Maven.
 Framework & Design Considerations
 RestAssured is used in writing this project using the BDD framework of Cucumber for documentation and reporting.
