@@ -9,7 +9,7 @@ import org.testng.annotations.*;
 import java.util.Properties;
 
 @CucumberOptions(
-        features = "src/main/java/io/christdoes/feature/Mobiquity.feature",
+        features = "src/main/resources/feature/Mobiquity.feature",
         glue = {"io.christdoes.stepdefinition"},
         tags = {"@UATTesting"},
         plugin = {"pretty", "html:target/site/cucumber-pretty", "json:target/cucumber.json"},

@@ -1,7 +1,9 @@
 package io.christdoes.test.testcases;
 
 import io.christdoes.test.init.Init;
+import io.christdoes.utility.MyLogger;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import io.restassured.specification.RequestSpecification;
@@ -15,20 +17,20 @@ import java.util.regex.Pattern;
 import static io.christdoes.test.init.Init.getProperties;
 import static io.restassured.RestAssured.given;
 
-public class TestCases {
-    static int userId;
-   static List<Integer> idList;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
-   /**
-    * This method is to check for the username @Delphine, passed it as a query parameter and pass the userId to the next method
-    * to query the posts user @Delphine has made. the user id is stored in @userId.
-    * **/
+public class TestCases extends MyLogger {
+    static int userId;
+   static java.util.List<Integer> idList;
+
     @Test(priority = 1)
     public static void searchForUsername( ) throws Throwable {
-        Response res = RestAssured.given().queryParam(getProperties().getProperty("project.query"), getProperties().getProperty("project.username"))
+        Response response = RestAssured.given().queryParam(getProperties().getProperty("project.query"), getProperties().getProperty("project.username"))
                 .get(Init.initProperties() +getProperties().getProperty("users.pathURL"));
-         userId = (Integer) res.jsonPath().getList("id").get(0);
-         System.out.println("This is the user ID" +userId);
+        response.then().contentType(ContentType.JSON).statusCode(200).log().all();
+        userId = (Integer) response.jsonPath().getList("id").get(0);
+        System.out.println("This is the user ID" +userId);
     }
 
     /***
@@ -44,8 +46,11 @@ public class TestCases {
         ResponseBody body = response.getBody();
         String bodyStringValue = body.asString();
         idList = response.jsonPath().getList("id");
-        System.out.println("This is the user post IDs" +idList);
+        MyLogger.info("This is the user post IDs" +idList);
+        response.then().contentType(ContentType.JSON).statusCode(200).log().all();
+        MyLogger.info("Response returns a valid code of  " +response.statusCode());
         Assert.assertTrue(bodyStringValue.contains("id"));
+        MyLogger.info("It validates the IDs of the post are returned" +bodyStringValue.contains("id"));
     }
 
     /****
@@ -57,10 +62,12 @@ public class TestCases {
     @Test( priority = 3)
     public static void searchForUserCommentinnPostAndVlidateEmail( ) throws Throwable {
         for ( Integer e: idList) {
+            MyLogger.info("Iteration through the post IDs passed " + e);
             Response response = myRequest().get( Init.initProperties()+getProperties().getProperty("user.comment.pathURL") +e);
             List<String> email = response.jsonPath().getList("email");
+            MyLogger.info( "The emails are retrieved using the IDs" + email );
             for (String s: email) {
-                System.out.println("This validates email " +s);
+                MyLogger.info("email validations are carried out here " +s);
                 Assert.assertTrue(validate(s));
             }
         }
@@ -90,6 +97,10 @@ public class TestCases {
         RequestSpecification httpRequest = given();
         httpRequest.header("Content-Type", "application/json");
         return httpRequest;
+    }
+
+    public static void negativeTestCases(){
+
     }
 
 }
