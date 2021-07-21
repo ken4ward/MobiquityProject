@@ -36,4 +36,4 @@ jobs:
 
       # run tests!
       
-      - run: mvn test -Dcucumber.options="src/main/java/io/christdoes/feature/Mobiquity.feature"
+      - run: mvn test -Dcucumber.options="src/main/resources/feature/Mobiquity.feature"
