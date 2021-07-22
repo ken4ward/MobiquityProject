@@ -33,6 +33,7 @@ import static io.restassured.RestAssured.proxy;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchema;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -46,12 +47,14 @@ public class TestCases extends MyLogger {
         Response response = RestAssured.given().queryParam(getProperties().getProperty("project.query"), getProperties().getProperty("project.username"))
                 .get(Init.initProperties() +getProperties().getProperty("users.pathURL"));
         response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/users.json"))
-                .body("username", equalTo(Arrays.asList("Delphine")))
+                .body(getProperties().getProperty("project.query"), equalTo(Arrays.asList(getProperties().getProperty("project.username"))))
                 .contentType(ContentType.JSON).statusCode(200).log().all();
         List<UserItem> userItems = response.as(new TypeRef<>() {});
         for ( UserItem u: userItems ) {
             if ( (Integer) response.jsonPath().getList("id").get(0) == u.getId() ){
                 userId = u.getId();
+                MyLogger.debug("Assertion for info " +u.getAddress().getGeo().getLat().matches(floatMatch) );
+                MyLogger.info("assert for info on " +u.getCompany().getCatchPhrase().matches(anyString));
                 MyLogger.info("This is getting the user ID of Delphine " + userId);
             }
         }
@@ -114,7 +117,12 @@ public class TestCases extends MyLogger {
         }
     }
 
-    private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+    static  String emailMatch = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
+    static String floatMatch = "^([+-]?\\d*\\.?\\d*)$";
+    static String anyString = "(.*)(\\d+)(.*)";
+
+    private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile( emailMatch, Pattern.CASE_INSENSITIVE);
+    private static final Pattern FLOAT_MATCHER = Pattern.compile( floatMatch, Pattern.CASE_INSENSITIVE);
     public static boolean validate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
