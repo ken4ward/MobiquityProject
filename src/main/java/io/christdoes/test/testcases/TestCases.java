@@ -35,8 +35,7 @@ import org.apache.logging.log4j.LogManager;
 
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchema;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.*;
 
 public class TestCases extends MyLogger {
     static int userId;
@@ -53,6 +52,8 @@ public class TestCases extends MyLogger {
         for ( UserItem u: userItems ) {
             if ( (Integer) response.jsonPath().getList("id").get(0) == u.getId() ){
                 userId = u.getId();
+                Assert.assertTrue(u.getAddress().getGeo().getLat().matches(floatMatch));
+//                Assert.assertTrue( u.getCompany().getCatchPhrase().matches(anyString), u.getCompany().getCatchPhrase() );
                 MyLogger.debug("Assertion for info " +u.getAddress().getGeo().getLat().matches(floatMatch) );
                 MyLogger.info("assert for info on " +u.getCompany().getCatchPhrase().matches(anyString));
                 MyLogger.info("This is getting the user ID of Delphine " + userId);
@@ -97,6 +98,8 @@ public class TestCases extends MyLogger {
             for (CommentsItem s: commentsItems) {
                 MyLogger.info("email validations are carried out here " +s);
                 Assert.assertTrue(validate(s.getEmail()));
+                Assert.assertTrue(s.getName().matches(anyString));
+                MyLogger.info("email validations are carried out here " +s.getName().matches(anyString));
             }
         }
     }
@@ -114,12 +117,13 @@ public class TestCases extends MyLogger {
         for (TodoItem s: todoItems) {
             Assert.assertTrue(s.getUserId() == userId);
             MyLogger.info(s.toString());
+            Assert.assertTrue( s.getTitle().matches(anyString), s.getTitle() );
         }
     }
 
     static  String emailMatch = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
     static String floatMatch = "^([+-]?\\d*\\.?\\d*)$";
-    static String anyString = "(.*)(\\d+)(.*)";
+    static String anyString = "(?i)[a-z,\\s]+";
 
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile( emailMatch, Pattern.CASE_INSENSITIVE);
     private static final Pattern FLOAT_MATCHER = Pattern.compile( floatMatch, Pattern.CASE_INSENSITIVE);
