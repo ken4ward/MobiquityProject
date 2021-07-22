@@ -1,6 +1,8 @@
 package io.christdoes.test.testcases;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.fge.jsonschema.cfg.ValidationConfiguration;
+import com.github.fge.jsonschema.main.JsonSchemaFactory;
 import io.christdoes.pojo.comments.CommentsItem;
 import io.christdoes.pojo.posts.PostsItem;
 import io.christdoes.pojo.todo.Todo;
@@ -18,10 +20,12 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.github.fge.jsonschema.SchemaVersion.DRAFTV4;
 import static io.christdoes.test.init.Init.getProperties;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.proxy;
@@ -29,16 +33,21 @@ import static io.restassured.RestAssured.proxy;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+
 public class TestCases extends MyLogger {
     static int userId;
-   static java.util.List<Integer> idList;
-    private static Object ArrayList;
+    static java.util.List<Integer> idList;
 
     @Test(priority = 1)
     public static void searchForUsername( ) throws Throwable {
         Response response = RestAssured.given().queryParam(getProperties().getProperty("project.query"), getProperties().getProperty("project.username"))
                 .get(Init.initProperties() +getProperties().getProperty("users.pathURL"));
-        response.then().contentType(ContentType.JSON).statusCode(200).log().all();
+        response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/users.json"))
+                .body("username", equalTo(Arrays.asList("Delphine")))
+                .contentType(ContentType.JSON).statusCode(200).log().all();
         List<UserItem> userItems = response.as(new TypeRef<>() {});
         for ( UserItem u: userItems ) {
             if ( (Integer) response.jsonPath().getList("id").get(0) == u.getId() ){
@@ -60,7 +69,7 @@ public class TestCases extends MyLogger {
         // Get Response Body
         ResponseBody body = response.getBody();
         idList = response.jsonPath().getList("id");
-        response.then().contentType(ContentType.JSON).statusCode(200).log().all();
+        response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/posts.json")).contentType(ContentType.JSON).statusCode(200).log().all();
         List<PostsItem> postsItems = response.as(new TypeRef<>() {});
         for ( PostsItem p : postsItems) {
             Assert.assertTrue(p.getUserId() == userId);
@@ -79,7 +88,7 @@ public class TestCases extends MyLogger {
         for ( Integer e: idList) {
             MyLogger.info("Iteration through the post IDs passed " + e);
             Response response = myRequest().get( Init.initProperties()+getProperties().getProperty("user.comment.pathURL") +e);
-            response.then().contentType(ContentType.JSON).statusCode(200).log().all();
+            response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/comments.json")).contentType(ContentType.JSON).statusCode(200).log().all();
             List<CommentsItem> commentsItems = response.as(new TypeRef<>() {});
             MyLogger.info( "The emails are retrieved using the IDs" + commentsItems );
             for (CommentsItem s: commentsItems) {
@@ -96,8 +105,7 @@ public class TestCases extends MyLogger {
     @Test(priority = 4)
     public static void otherScenariosThatCouldGoWrong() throws Throwable {
         Response response = myRequest().get(Init.initProperties() + getProperties().getProperty("user.todo.pathURL") + userId);
-        // Get Response Body
-        response.then().contentType(ContentType.JSON).statusCode(200).log().all();
+        response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/todos.json")).contentType(ContentType.JSON).statusCode(200).log().all();
         List<TodoItem> todoItems = response.as(new TypeRef<>() {});
         Assert.assertNotNull(response.body());
         for (TodoItem s: todoItems) {
