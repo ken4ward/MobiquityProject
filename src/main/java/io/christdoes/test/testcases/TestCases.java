@@ -47,7 +47,7 @@ public class TestCases extends MyLogger {
                 .get(Init.initProperties() +getProperties().getProperty("users.pathURL"));
         response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/users.json"))
                 .body(getProperties().getProperty("project.query"), equalTo(Arrays.asList(getProperties().getProperty("project.username"))))
-                .contentType(ContentType.JSON).statusCode(200).log().all();
+                .contentType(ContentType.JSON).statusCode(200).extract().as(UserItem[].class);
         List<UserItem> userItems = response.as(new TypeRef<>() {});
         for ( UserItem u: userItems ) {
             if ( (Integer) response.jsonPath().getList("id").get(0) == u.getId() ){
@@ -56,7 +56,6 @@ public class TestCases extends MyLogger {
 //                Assert.assertTrue( u.getCompany().getCatchPhrase().matches(anyString), u.getCompany().getCatchPhrase() );
                 MyLogger.debug("Assertion for info " +u.getAddress().getGeo().getLat().matches(floatMatch) );
                 MyLogger.info("assert for info on " +u.getCompany().getCatchPhrase().matches(anyString));
-                MyLogger.info("This is getting the user ID of Delphine " + userId);
             }
         }
     }
@@ -73,7 +72,7 @@ public class TestCases extends MyLogger {
         // Get Response Body
         ResponseBody body = response.getBody();
         idList = response.jsonPath().getList("id");
-        response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/posts.json")).contentType(ContentType.JSON).statusCode(200).log().all();
+        response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/posts.json")).contentType(ContentType.JSON).statusCode(200).extract().as(PostsItem[].class);
         List<PostsItem> postsItems = response.as(new TypeRef<>() {});
         for ( PostsItem p : postsItems) {
             Assert.assertTrue(p.getUserId() == userId);
@@ -92,7 +91,7 @@ public class TestCases extends MyLogger {
         for ( Integer e: idList) {
             MyLogger.info("Iteration through the post IDs passed " + e);
             Response response = myRequest().get( Init.initProperties()+getProperties().getProperty("user.comment.pathURL") +e);
-            response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/comments.json")).contentType(ContentType.JSON).statusCode(200).log().all();
+            response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/comments.json")).contentType(ContentType.JSON).statusCode(200).extract().as(CommentsItem[].class);;
             List<CommentsItem> commentsItems = response.as(new TypeRef<>() {});
             MyLogger.info( "The emails are retrieved using the IDs" + commentsItems );
             for (CommentsItem s: commentsItems) {
@@ -111,7 +110,7 @@ public class TestCases extends MyLogger {
     @Test(priority = 4)
     public static void otherScenariosThatCouldGoWrong() throws Throwable {
         Response response = myRequest().get(Init.initProperties() + getProperties().getProperty("user.todo.pathURL") + userId);
-        response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/todos.json")).contentType(ContentType.JSON).statusCode(200).log().all();
+        response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/todos.json")).contentType(ContentType.JSON).statusCode(200).extract().as(TodoItem[].class);
         List<TodoItem> todoItems = response.as(new TypeRef<>() {});
         Assert.assertNotNull(response.body());
         for (TodoItem s: todoItems) {
@@ -126,7 +125,6 @@ public class TestCases extends MyLogger {
     static String anyString = "(?i)[a-z,\\s]+";
 
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile( emailMatch, Pattern.CASE_INSENSITIVE);
-    private static final Pattern FLOAT_MATCHER = Pattern.compile( floatMatch, Pattern.CASE_INSENSITIVE);
     public static boolean validate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
