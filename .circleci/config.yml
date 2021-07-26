@@ -61,7 +61,7 @@ steps:
       name: Allure binary symlinking
       command: sudo ln -s /usr/local/share/allure/bin/allure /usr/local/bin/allure
       
- run:
+run:
   name: generate allure report
     command: |
         sudo npm install -g allure-commandline
