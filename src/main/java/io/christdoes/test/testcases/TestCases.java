@@ -15,7 +15,9 @@ import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
+import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
+import org.hamcrest.Matchers;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -48,16 +50,17 @@ public class TestCases extends MyLogger {
         response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/users.json"))
                 .body(getProperties().getProperty("project.query"), equalTo(Arrays.asList(getProperties().getProperty("project.username"))))
                 .contentType(ContentType.JSON).statusCode(200).extract().as(UserItem[].class);
+        ValidatableResponse validatableResponse = response.then();
+        validatableResponse.time( Matchers.both( Matchers.greaterThanOrEqualTo(1000L)).and( Matchers.lessThanOrEqualTo(2000L)) );
         List<UserItem> userItems = response.as(new TypeRef<>() {});
         for ( UserItem u: userItems ) {
             if ( (Integer) response.jsonPath().getList("id").get(0) == u.getId() ){
                 userId = u.getId();
                 Assert.assertTrue(u.getAddress().getGeo().getLat().matches(floatMatch));
-//                Assert.assertTrue( u.getCompany().getCatchPhrase().matches(anyString), u.getCompany().getCatchPhrase() );
                 MyLogger.debug("Assertion for info " +u.getAddress().getGeo().getLat().matches(floatMatch) );
-                MyLogger.info("assert for info on " +u.getCompany().getCatchPhrase().matches(anyString));
             }
         }
+        ObjectMapper objectMapper = new ObjectMapper();
     }
 
     /***
@@ -76,7 +79,7 @@ public class TestCases extends MyLogger {
         List<PostsItem> postsItems = response.as(new TypeRef<>() {});
         for ( PostsItem p : postsItems) {
             Assert.assertTrue(p.getUserId() == userId);
-            MyLogger.info("This is the user Id of Delpihne " +userId);
+            MyLogger.info( "" +p.getBody().matches( anyString ) );
         }
     }
 
@@ -95,10 +98,8 @@ public class TestCases extends MyLogger {
             List<CommentsItem> commentsItems = response.as(new TypeRef<>() {});
             MyLogger.info( "The emails are retrieved using the IDs" + commentsItems );
             for (CommentsItem s: commentsItems) {
-                MyLogger.info("email validations are carried out here " +s);
+                MyLogger.info("email validations are carried out here " +s.getEmail());
                 Assert.assertTrue(validate(s.getEmail()));
-                Assert.assertTrue(s.getName().matches(anyString));
-                MyLogger.info("email validations are carried out here " +s.getName().matches(anyString));
             }
         }
     }
@@ -116,17 +117,23 @@ public class TestCases extends MyLogger {
         for (TodoItem s: todoItems) {
             Assert.assertTrue(s.getUserId() == userId);
             MyLogger.info(s.toString());
-            Assert.assertTrue( s.getTitle().matches(anyString), s.getTitle() );
         }
     }
 
     static  String emailMatch = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
     static String floatMatch = "^([+-]?\\d*\\.?\\d*)$";
-    static String anyString = "(?i)[a-z,\\s]+";
+    static String anyString = "[a-z]+";
 
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile( emailMatch, Pattern.CASE_INSENSITIVE);
+    private static final Pattern VALID_ANY_SENTENCE_ADDRESS_REGEX = Pattern.compile( anyString, Pattern.CASE_INSENSITIVE);
+
     public static boolean validate(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
+    }
+
+    public static boolean matchSentence(String sentence) {
+        Matcher matcher = VALID_ANY_SENTENCE_ADDRESS_REGEX.matcher(sentence);
         return matcher.find();
     }
 
