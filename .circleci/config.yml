@@ -60,3 +60,6 @@ steps:
   - run:
       name: Allure binary symlinking
       command: sudo ln -s /usr/local/share/allure/bin/allure /usr/local/bin/allure
+      
+ orbs:
+  allure: ayte/allure@0.1.3
