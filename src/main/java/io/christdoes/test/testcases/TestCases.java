@@ -49,9 +49,9 @@ public class TestCases extends MyLogger {
                 .get(Init.initProperties() +getProperties().getProperty("users.pathURL"));
         response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/users.json"))
                 .body(getProperties().getProperty("project.query"), equalTo(Arrays.asList(getProperties().getProperty("project.username"))))
-                .contentType(ContentType.JSON).statusCode(200).extract().as(UserItem[].class);
-        ValidatableResponse validatableResponse = response.then();
-        validatableResponse.time( Matchers.both( Matchers.greaterThanOrEqualTo(1000L)).and( Matchers.lessThanOrEqualTo(2000L)) );
+                .contentType(ContentType.JSON).statusCode(200).statusLine("HTTP/1.1 200 OK").extract().as(UserItem[].class);
+//        ValidatableResponse validatableResponse = response.then();
+//        validatableResponse.time( Matchers.both( Matchers.greaterThanOrEqualTo(1000L)).and( Matchers.lessThanOrEqualTo(2000L)) );
         List<UserItem> userItems = response.as(new TypeRef<>() {});
         for ( UserItem u: userItems ) {
             if ( (Integer) response.jsonPath().getList("id").get(0) == u.getId() ){
@@ -75,7 +75,7 @@ public class TestCases extends MyLogger {
         // Get Response Body
         ResponseBody body = response.getBody();
         idList = response.jsonPath().getList("id");
-        response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/posts.json")).contentType(ContentType.JSON).statusCode(200).extract().as(PostsItem[].class);
+        response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/posts.json")).contentType(ContentType.JSON).statusCode(200).statusLine("HTTP/1.1 200 OK").extract().as(PostsItem[].class);
         List<PostsItem> postsItems = response.as(new TypeRef<>() {});
         for ( PostsItem p : postsItems) {
             Assert.assertTrue(p.getUserId() == userId);
@@ -94,7 +94,7 @@ public class TestCases extends MyLogger {
         for ( Integer e: idList) {
             MyLogger.info("Iteration through the post IDs passed " + e);
             Response response = myRequest().get( Init.initProperties()+getProperties().getProperty("user.comment.pathURL") +e);
-            response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/comments.json")).contentType(ContentType.JSON).statusCode(200).extract().as(CommentsItem[].class);;
+            response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/comments.json")).contentType(ContentType.JSON).statusCode(200).statusLine("HTTP/1.1 200 OK").extract().as(CommentsItem[].class);;
             List<CommentsItem> commentsItems = response.as(new TypeRef<>() {});
             MyLogger.info( "The emails are retrieved using the IDs" + commentsItems );
             for (CommentsItem s: commentsItems) {
@@ -111,7 +111,7 @@ public class TestCases extends MyLogger {
     @Test(priority = 4)
     public static void otherScenariosThatCouldGoWrong() throws Throwable {
         Response response = myRequest().get(Init.initProperties() + getProperties().getProperty("user.todo.pathURL") + userId);
-        response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/todos.json")).contentType(ContentType.JSON).statusCode(200).extract().as(TodoItem[].class);
+        response.then().assertThat().body(matchesJsonSchemaInClasspath("schema/todos.json")).contentType(ContentType.JSON).statusLine("HTTP/1.1 200 OK").statusCode(200).extract().as(TodoItem[].class);
         List<TodoItem> todoItems = response.as(new TypeRef<>() {});
         Assert.assertNotNull(response.body());
         for (TodoItem s: todoItems) {
