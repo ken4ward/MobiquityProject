@@ -43,7 +43,7 @@ parameters:
   version:
     description: Allure version to use
     type: string
-    default: 2.13.1
+    default: 2.14.0
 steps:
   - run:
       name: Allure archive download
