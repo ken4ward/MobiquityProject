@@ -97,4 +97,4 @@ commands:
           destination: << parameters.artifact-path >>
 
 store_artifacts:
-     path: /home/circleci/project/allure-report
+     path: /temp/allure-report
