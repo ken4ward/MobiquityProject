@@ -21,21 +21,13 @@ import org.hamcrest.Matchers;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.github.fge.jsonschema.SchemaVersion.DRAFTV4;
 import static io.christdoes.test.init.Init.getProperties;
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.proxy;
-
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
-
-import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchema;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -60,7 +52,6 @@ public class TestCases extends MyLogger {
                 MyLogger.debug("Assertion for info " +u.getAddress().getGeo().getLat().matches(floatMatch) );
             }
         }
-        ObjectMapper objectMapper = new ObjectMapper();
     }
 
     /***
@@ -79,7 +70,7 @@ public class TestCases extends MyLogger {
         List<PostsItem> postsItems = response.as(new TypeRef<>() {});
         for ( PostsItem p : postsItems) {
             Assert.assertTrue(p.getUserId() == userId);
-            MyLogger.info( "" +p.getBody().matches( anyString ) );
+
         }
     }
 
@@ -122,7 +113,7 @@ public class TestCases extends MyLogger {
 
     static  String emailMatch = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
     static String floatMatch = "^([+-]?\\d*\\.?\\d*)$";
-    static String anyString = "[a-z]+";
+    static String anyString = "[^.!?\\s][^.!?]*(?:[.!?](?!['\"]?\\s|$)[^.!?]*)*[.!?]?['\"]?(?=\\s|$)";
 
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile( emailMatch, Pattern.CASE_INSENSITIVE);
     private static final Pattern VALID_ANY_SENTENCE_ADDRESS_REGEX = Pattern.compile( anyString, Pattern.CASE_INSENSITIVE);

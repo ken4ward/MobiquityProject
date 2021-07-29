@@ -35,7 +35,7 @@ public class TestRunner {
         testNGCucumberRunner.runCucumber(cucumberFeatureWrapper.getCucumberFeature());
     }
 
-    @DataProvider
+    @DataProvider(parallel = true)
     public Object[][] features() {
         return testNGCucumberRunner.provideFeatures();
     }
