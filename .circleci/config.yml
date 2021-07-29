@@ -43,9 +43,6 @@ jobs:
       
       - run: mvn test -Dcucumber.options="src/main/resources/feature/Mobiquity.feature"
 
-# This code is licensed from CircleCI to the user under the MIT license.
-# See here for details: https://circleci.com/developer/orbs/licensing
-version: '2.1'
 description: Orb providing support for [Allure Framework](https://github.com/allure-framework/allure2)
 commands:
   install:
