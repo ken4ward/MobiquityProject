@@ -41,7 +41,7 @@ jobs:
 
       # run tests!
       
-      - run: mvn test -Dcucumber.options="src/main/resources/feature/Mobiquity.feature"
+      - run: mvn exec:java -Dexec.mainClass=io.christdoes.test.testcases.TestCases.java
 
 description: Orb providing support for [Allure Framework](https://github.com/allure-framework/allure2)
 commands:
